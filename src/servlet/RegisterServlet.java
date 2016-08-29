@@ -61,7 +61,6 @@ public class RegisterServlet extends HttpServlet {
 				AdminService service = new AdminServiceImpl();
 				service.addAdmin(ad);
 				request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
-				
 			} catch (userRepeatException e) {
 				request.setAttribute("msg5", "账户名已存在");
 				request.setAttribute("admin", ad);

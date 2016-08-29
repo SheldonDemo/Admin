@@ -53,7 +53,8 @@ public class LoginServlet extends HttpServlet {
 			ad.setPwd("");
 			request.setAttribute("admin", ad);
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}else if(service.userExist(ad)){
+		}else{
+			request.setAttribute("admin", ad);
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		}
 	}
