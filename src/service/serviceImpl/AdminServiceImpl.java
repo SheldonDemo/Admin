@@ -14,10 +14,16 @@ public class AdminServiceImpl implements AdminService {
 
 	AdminDao dao = new AdminDaoImpl();
 	@Override
-	public void addAdmin(Admin admin) throws userRepeatException {
+	public void addAdmin(Admin admin) throws userRepeatException, UserNullException, PwdNullException {
 
+		if(admin.getUser().trim().equals("")){
+			throw new UserNullException("账户名不能为空");
+		}
 		if(userExist(admin.getUser())){
 			throw new userRepeatException("账号已存在");
+		}
+		if(admin.getPwd().trim().equals("")){
+			throw new PwdNullException("请输入密码");
 		}
 		dao.addAdmin(admin);
 	}
@@ -51,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
 		if(!userExist(user)){
 			throw new UserNotExistException("账户不存在请注册");
 		}
-		if(userExist(user)&&dao.getAdmin(user,pwd)==null){
+		if(dao.getAdmin(user,pwd)==null){
 			throw new PwdWrongException("密码错误");
 		}
 		return dao.getAdmin(user,pwd);

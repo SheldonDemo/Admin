@@ -9,7 +9,7 @@ import exception.userRepeatException;
 
 public interface AdminService {
 
-	public void addAdmin(Admin admin) throws userRepeatException;
+	public void addAdmin(Admin admin) throws userRepeatException, UserNullException, PwdNullException;
 	public void deleteAdmin(String user);
 	public void updateAdmin(Admin admin);
 	public boolean userExist(String user);

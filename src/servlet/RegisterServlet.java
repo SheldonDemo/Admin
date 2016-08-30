@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entity.Admin;
+import exception.PwdNullException;
+import exception.UserNullException;
 import exception.userRepeatException;
 import service.AdminService;
 import service.serviceImpl.AdminServiceImpl;
@@ -24,7 +26,6 @@ public class RegisterServlet extends HttpServlet {
      */
     public RegisterServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -43,37 +44,36 @@ public class RegisterServlet extends HttpServlet {
 		ad.setUser(user);
 		ad.setPwd(pwd);
 		ad.setEmail(email);
-		if(user.trim().equals("")){
-			request.setAttribute("msg2", "账户名不能为空");
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/register.jsp").forward(request, response);
-		}else if(pwd.trim().equals("")){
-			request.setAttribute("msg3", "密码不能为空");
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/register.jsp").forward(request, response);
-		}else if(checkpwd.trim().equals("")||!checkpwd.equals(pwd)){
+		if(checkpwd.trim().equals("")||!checkpwd.equals(pwd)){
 			request.setAttribute("msg4", "两次输入密码不相同");
 			request.setAttribute("admin", ad);
 			request.getRequestDispatcher("/register.jsp").forward(request, response);
 		}else{
-			
 			try {
 				AdminService service = new AdminServiceImpl();
 				service.addAdmin(ad);
 				request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
 			} catch (userRepeatException e) {
-				request.setAttribute("msg5", "账户名已存在");
+				request.setAttribute("msg5", e.getMessage());
 				request.setAttribute("admin", ad);
 				request.getRequestDispatcher("/register.jsp").forward(request, response);
+			} catch (UserNullException e) {
+				request.setAttribute("msg2", e.getMessage());
+				request.setAttribute("admin", ad);
+				request.getRequestDispatcher("/register.jsp").forward(request, response);			
+			} catch (PwdNullException e) {
+				request.setAttribute("msg3", e.getMessage());
+				request.setAttribute("admin", ad);
+				request.getRequestDispatcher("/register.jsp").forward(request, response);			
 			}
 		}
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

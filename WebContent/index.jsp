@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,9 +16,9 @@
 </style>
 </head>
 <body>
-<center><h3>登陆界面</h3></center>
 <form action="${pageContext.request.contextPath }/LoginServlet" method="post">
 <table align="center" border="1" width="400px">
+<caption><h3>登陆界面</h3></caption>
 	<tr>
     	<th>帐号</th>
         <td><input type="text" name="user" value="${user }"/><font color="red">${msg1 }</font><font color="red">${msg7 }</font></td>
@@ -28,8 +29,9 @@
     </tr>
     <tr>
     	<td colspan="2" align="center">
-        <input type="submit" value="登录">&nbsp;
-        <input type="button" value="注册" onclick="location.href='${pageContext.request.contextPath }/register.jsp'"></td>
+        <input type="submit" value="登录"/>&nbsp;
+        <input type="button" value="注册" onclick="location.href='${pageContext.request.contextPath }/register.jsp'"/>
+        </td>
     </tr>
 </table>
 </form>
