@@ -20,11 +20,11 @@
 <table align="center" border="1" width="400px">
 	<tr>
     	<th>帐号</th>
-        <td><input type="text" name="user" value="${admin.user }"/><font color="red">${msg1 }</font><font color="red">${msg7 }</font></td>
+        <td><input type="text" name="user" value="${user }"/><font color="red">${msg1 }</font><font color="red">${msg7 }</font></td>
     </tr>
     <tr>
     	<th>密码</th>
-        <td><input type="password" name="pwd" value="${admin.pwd }"/><font color="red">${msg6 }</font><font color="red">${msg8 }</font></td>
+        <td><input type="password" name="pwd" value="${pwd }"/><font color="red">${msg6 }</font><font color="red">${msg8 }</font></td>
     </tr>
     <tr>
     	<td colspan="2" align="center">

@@ -80,11 +80,11 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public Admin getAdminByUser(String user) {
+	public Admin getAdmin(String user,String pwd) {
 		try {
 			conn = JDBCUtil.getConnection();
-			sql = "select * from admin where user=?";
-			Admin ad  = qr.query(conn, sql, new BeanHandler<Admin>(Admin.class), user);
+			sql = "select * from admin where user=? and pwd=?";
+			Admin ad  = qr.query(conn, sql, new BeanHandler<Admin>(Admin.class), user,pwd);
 			return ad;
 		} catch (SQLException e) {
 			e.printStackTrace();

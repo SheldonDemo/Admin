@@ -3,6 +3,10 @@ package service.serviceImpl;
 import dao.AdminDao;
 import dao.daoImpl.AdminDaoImpl;
 import entity.Admin;
+import exception.PwdNullException;
+import exception.PwdWrongException;
+import exception.UserNotExistException;
+import exception.UserNullException;
 import exception.userRepeatException;
 import service.AdminService;
 
@@ -12,17 +16,6 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void addAdmin(Admin admin) throws userRepeatException {
 
-//		if(admin.getUser().trim().equals("")){
-//			throw new UserNullException("账户名不能为空");
-//		}
-//		if(admin.getPwd().trim().equals("")){
-//			throw new PwdNullException("请输入密码");
-//		}else if(!userExist(admin.getUser())){
-//			throw new UserNotExistException("账户不存在请注册");
-//		}else if(userExist(admin.getUser())&&!userExist(admin)){
-//			throw new PwdWrongException("密码错误");
-//			
-//		}
 		if(userExist(admin.getUser())){
 			throw new userRepeatException("账号已存在");
 		}
@@ -47,8 +40,21 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public Admin getAdminByUser(String user) {
-		return dao.getAdminByUser(user);
+	public Admin getAdmin(String user,String pwd) throws UserNullException, PwdNullException, UserNotExistException, PwdWrongException {
+
+		if(user.trim().equals("")){
+			throw new UserNullException("账户名不能为空");
+		}
+		if(pwd.trim().equals("")){
+			throw new PwdNullException("请输入密码");
+		}
+		if(!userExist(user)){
+			throw new UserNotExistException("账户不存在请注册");
+		}
+		if(userExist(user)&&dao.getAdmin(user,pwd)==null){
+			throw new PwdWrongException("密码错误");
+		}
+		return dao.getAdmin(user,pwd);
 	}
 
 	@Override

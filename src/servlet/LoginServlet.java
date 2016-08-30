@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entity.Admin;
+import exception.PwdNullException;
+import exception.PwdWrongException;
+import exception.UserNotExistException;
+import exception.UserNullException;
 import service.AdminService;
 import service.serviceImpl.AdminServiceImpl;
 
@@ -33,29 +37,27 @@ public class LoginServlet extends HttpServlet {
 		Admin ad = new Admin();
 		String user = request.getParameter("user");
 		String pwd = request.getParameter("pwd");
-		ad.setUser(user);
-		ad.setPwd(pwd);
 		AdminService service = new AdminServiceImpl();
-		if(user.trim().equals("")){
-			request.setAttribute("msg1","账户名不能为空" );
+		try {
+			ad = service.getAdmin(user,pwd);
 			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}else if(pwd.trim().equals("")){
-			request.setAttribute("msg6","请输入密码" );
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}else if(!service.userExist(user)){
-			request.setAttribute("msg7","账户不存在请注册" );
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}else if(service.userExist(user)&&!service.userExist(ad)){
-			request.setAttribute("msg8","密码错误" );
-			ad.setPwd("");
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}else{
-			request.setAttribute("admin", ad);
+			request.getRequestDispatcher("/indexOfAdmin.jsp").forward(request, response);
+		} catch (UserNullException e) {
+			request.setAttribute("msg1", e.getMessage());
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		} catch (PwdNullException e) {
+			request.setAttribute("msg6", e.getMessage());
+			request.setAttribute("user", user);
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		} catch (UserNotExistException e) {
+			request.setAttribute("msg7", e.getMessage());
+			request.setAttribute("user", user);
+			request.setAttribute("pwd", pwd);
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		} catch (PwdWrongException e) {
+			request.setAttribute("msg8", e.getMessage());
+			request.setAttribute("user", user);
+			request.getRequestDispatcher("/index.jsp").forward(request, response);		
 		}
 	}
 
