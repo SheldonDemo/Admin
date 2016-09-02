@@ -16,16 +16,16 @@ import service.AdminService;
 import service.serviceImpl.AdminServiceImpl;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class UpdateAdminServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/UpdateAdminServlet")
+public class UpdateAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public UpdateAdminServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,31 +35,28 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("utf-8");
-		Admin ad = new Admin();
 		String user = request.getParameter("user");
-		String pwd = request.getParameter("pwd");
+		String oldpwd = request.getParameter("oldpwd");
+		String newpwd = request.getParameter("newpwd");
+		String checknewpwd = request.getParameter("checknewpwd");
 		AdminService service = new AdminServiceImpl();
+		Admin ad = new Admin();
 		try {
-			ad = service.getAdmin(user,pwd);
-			request.setAttribute("admin", ad);
-			request.getRequestDispatcher("/indexOfAdmin.jsp").forward(request, response);
-		} catch (UserNullException e) {
-			request.setAttribute("msg1", e.getMessage());
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		} catch (PwdNullException e) {
-			request.setAttribute("msg6", e.getMessage());
-			request.setAttribute("user", user);
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		} catch (UserNotExistException e) {
-			request.setAttribute("msg7", e.getMessage());
-			request.setAttribute("user", user);
-			request.setAttribute("pwd", pwd);
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		} catch (PwdWrongException e) {
-			request.setAttribute("msg8", e.getMessage());
-			request.setAttribute("user", user);
-			request.getRequestDispatcher("/index.jsp").forward(request, response);		
+			service.getAdmin(user, oldpwd);
+				
+			if("".equals(checknewpwd.trim())||!checknewpwd.equals(newpwd)){
+					request.setAttribute("msg10", "两次输入密码不相同");
+					request.setAttribute("oldpwd",oldpwd );
+					request.getRequestDispatcher("/update.jsp").forward(request, response);
+			}else{
+				ad.setUser(user);
+				ad.setPwd(newpwd);
+				service.updateAdmin(ad);
+				request.getRequestDispatcher("/updateSuccess.jsp").forward(request, response);
+			}
+		} catch (UserNullException | PwdNullException | UserNotExistException | PwdWrongException e) {
+			request.setAttribute("msg9", "密码错误");
+			request.getRequestDispatcher("/update.jsp").forward(request, response);
 		}
 	}
 
@@ -67,6 +64,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
