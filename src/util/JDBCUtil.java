@@ -9,9 +9,13 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class JDBCUtil {
 
+	private static DataSource datasourse;
+	static{
+		
+		datasourse = new ComboPooledDataSource();
+	}
 	
-	public static QueryRunner getQueryRunner(String str){
-		DataSource datasourse = new ComboPooledDataSource(str);
+	public static QueryRunner getQueryRunner(){
 
 		return new QueryRunner(datasourse);
 	}

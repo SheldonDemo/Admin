@@ -18,7 +18,7 @@ public class AdminDaoImpl implements AdminDao{
 	public void addAdmin(Admin admin) {
 		try {
 			sql = "insert into admin(user,pwd,email) values(?,?,?)";
-			JDBCUtil.getQueryRunner("admin").update(sql, admin.getUser(), admin.getPwd(), admin.getEmail());
+			JDBCUtil.getQueryRunner().update(sql, admin.getUser(), admin.getPwd(), admin.getEmail());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -29,7 +29,7 @@ public class AdminDaoImpl implements AdminDao{
 	public void deleteAdmin(String user) {
 		try {
 			sql = "delete from admin where user=?";
-			JDBCUtil.getQueryRunner("admin").update(sql, user);
+			JDBCUtil.getQueryRunner().update(sql, user);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -40,7 +40,7 @@ public class AdminDaoImpl implements AdminDao{
 	public void updateAdmin(Admin admin) {
 		try {
 			sql = "update admin set pwd=?,email=? where user=?";
-			JDBCUtil.getQueryRunner("admin").update(sql, admin.getPwd(), admin.getEmail(), admin.getUser());
+			JDBCUtil.getQueryRunner().update(sql, admin.getPwd(), admin.getEmail(), admin.getUser());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -51,7 +51,7 @@ public class AdminDaoImpl implements AdminDao{
 	public boolean userExist(String user) {
 		try {
 			sql = "select * from admin where user=?";
-			String str = JDBCUtil.getQueryRunner("admin").query(sql,new ScalarHandler<String>(), user);
+			String str = JDBCUtil.getQueryRunner().query(sql,new ScalarHandler<String>(), user);
 			if(str!=null){
 				return true;
 			}else{
@@ -67,7 +67,7 @@ public class AdminDaoImpl implements AdminDao{
 	public Admin getAdmin(String user,String pwd) {
 		try {
 			sql = "select * from admin where user=? and pwd=?";
-			Admin ad  = JDBCUtil.getQueryRunner("admin").query(sql, new BeanHandler<Admin>(Admin.class), user,pwd);
+			Admin ad  = JDBCUtil.getQueryRunner().query(sql, new BeanHandler<Admin>(Admin.class), user,pwd);
 			return ad;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,7 +79,7 @@ public class AdminDaoImpl implements AdminDao{
 	public boolean userExist(Admin admin) {
 		try {
 			sql = "select * from admin where user=? and pwd=?";
-			String str = JDBCUtil.getQueryRunner("admin").query(sql,new ScalarHandler<String>(), admin.getUser(), admin.getPwd());
+			String str = JDBCUtil.getQueryRunner().query(sql,new ScalarHandler<String>(), admin.getUser(), admin.getPwd());
 			if(str!=null){
 				return true;
 			}else{
